@@ -19,6 +19,32 @@ Every scan becomes a mini predictive maintenance check.
 
 - This is a huge practical advantage for Indian Railways.
 
+# **Solution** (Implementation Flow)
+Scan Offline
+
+- Use QuaggaJS / ZXing for in-browser scanning.
+- Store results (wagon ID, timestamp, GPS location if available) in IndexedDB.
+- Tag Records with Sync Status
+- Each record has a status: pending, synced, failed.
+- On scan → mark pending.
+
+Background Sync
+
+- When network detected (navigator.onLine === true), push all pending scans to UDM/TMS API.
+- On success → mark as synced.
+- If error → keep as failed for retry.
+
+Conflict Handling
+
+- Use unique IDs + timestamps.
+- If the same wagon is scanned multiple times offline, UDM can resolve via latest timestamp.
+- UI Feedback
+- Show “Offline Mode Active” banner when disconnected.
+- Provide a Sync Now button (in addition to auto-sync).
+
+Badge/indicator for “X unsynced records”.
+--------
+
 3. **Fraud/Counterfeit Detection**
 
 - Barcodes are prone to duplication. Add:
